@@ -12,7 +12,7 @@ picApiUrl = baseUrl+"/HPImageArchive.aspx?format=js&n=100" #网页地址
 
 response = urllib.request.urlopen(picApiUrl) #打开链接
 
-baseFilePath="C:\\Users\\kai.zang\\Pictures\\";#硬盘路径
+baseFilePath="D:\\445915\\resource\\BingPics\\";#硬盘路径
 
 print("当前文件路径："+baseFilePath);
 
