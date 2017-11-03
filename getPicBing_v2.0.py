@@ -56,13 +56,16 @@ for image in imageslist:
          # 根据文件哈希值获取图片
         picHshResponse=urllib.request.urlopen(picUrlHsh);
 
-        _, params = cgi.parse_header(picHshResponse.headers.get('Content-Disposition', ''));
+        params = cgi.parse_header(picHshResponse.headers.get('Content-Disposition', ''))[-1];
 
         hshFileName=params['filename'];
 
-        hshFileExts=hshFileName.split('.');
+        # hshExt=hshFileName.split('.')[-1];
 
-        hshExt=hshFileExts[len(hshFileExts)-1];
+        # print(hshExt);
+
+
+        # hshExt=hshFileExts[len(hshFileExts)-1];
 
         hshFile = open(baseFilePath+hshFileName,"wb") #打开一个文本文件
 
