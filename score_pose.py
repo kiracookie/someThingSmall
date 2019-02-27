@@ -5,6 +5,10 @@ import os,urllib.request,sys,json,cgi,xlwt,xlrd,re,shutil;
 
 rootdir=os.getcwd()
 
+result_file_path='result'
+
+result_excel_name='resutl.xls'
+
 # print(rootdir)
 
 maxScore=-3#设定对比值
@@ -51,9 +55,11 @@ for file in  list :
     #移动文件部分
             #TODO 关联另外一个文件
     if if_move_file:
-      if not os.path.exists(file_path):
-          os.mkdir(file_path)
-    print(file+"=="+file_path+'/'+file)
-    shutil.copyfile(file,file_path+'/'+file)
-wbk.save('resutl.xls')        
+        if not os.path.exists(result_file_path):
+              os.mkdir(result_file_path)
+        if not os.path.exists(result_file_path+os.path.sep+file_path):
+              os.mkdir(result_file_path+os.path.sep+file_path)
+        #print(file+"=="+result_file_path+os.path.sep+file_path+os.path.sep+file)
+        shutil.copyfile(file,result_file_path+os.path.sep+file_path+os.path.sep+file)
+wbk.save(result_file_path+os.path.sep+result_excel_name)        
 print("写入结束")
