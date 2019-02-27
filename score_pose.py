@@ -5,15 +5,20 @@ import os,urllib.request,sys,json,cgi,xlwt,xlrd,re,shutil;
 
 rootdir=os.getcwd()
 
-result_file_path='result'
+result_file_path='result'          #结果文件夹
 
-result_excel_name='resutl.xls'
+result_excel_name='resutl.xls'             #结果excel名称
 
-# print(rootdir)
+pdb_path='pdb'#pdb文件夹路径
 
-maxScore=-3#设定对比值
+dok_path='dok'#dok文件夹路径
 
-list = os.listdir(rootdir) #列出文件夹下所有的目录与文件
+
+maxScore=-8#设定对比值
+
+list = os.listdir(dok_path) #列出文件夹下所有的目录与文件
+
+# print(list)
 
 #excel初始坐标
 column=0
@@ -27,12 +32,16 @@ sheet.write(row,column,'pose')
 column+=1
 sheet.write(row,column,'score')
 
+               #创建result文件夹
+if not os.path.exists(result_file_path):
+    os.mkdir(result_file_path)
+
 for file in  list :
 	# 判断不为目录且dok 
- if os.path.isfile(file) and ".dok" in file:
+ if not os.path.isfile(file) and ".dok" in file:
     file_path=file.replace('.dok','')
     # print(file)
-    current_file=open(rootdir+"\\"+file, mode='r')
+    current_file=open(dok_path+os.path.sep+file, mode='r')
     file_content=current_file.read()
     # print(file_content)
     pattern = re.compile(r'^REMARK Cluster+.+mol$',re.M)
@@ -51,15 +60,16 @@ for file in  list :
             column+=1
             sheet.write(row,column,float(pose_score[2]))
             if_move_file=True
+            break
             
     #移动文件部分
             #TODO 关联另外一个文件
     if if_move_file:
-        if not os.path.exists(result_file_path):
-              os.mkdir(result_file_path)
         if not os.path.exists(result_file_path+os.path.sep+file_path):
-              os.mkdir(result_file_path+os.path.sep+file_path)
-        #print(file+"=="+result_file_path+os.path.sep+file_path+os.path.sep+file)
-        shutil.copyfile(file,result_file_path+os.path.sep+file_path+os.path.sep+file)
-wbk.save(result_file_path+os.path.sep+result_excel_name)        
+            os.mkdir(result_file_path+os.path.sep+file_path)
+            #复制dok文件到结果目录
+        shutil.copyfile(dok_path+os.path.sep+file,result_file_path+os.path.sep+file_path+os.path.sep+file)
+             #复制pdb文件到结果目录
+        shutil.copyfile(pdb_path+os.path.sep+file.replace('dok','pdb'),result_file_path+os.path.sep+file_path+os.path.sep+file.replace('dok','pdb'))
+wbk.save(result_file_path+os.path.sep+result_excel_name)
 print("写入结束")
