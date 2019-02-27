@@ -63,7 +63,6 @@ for file in  list :
             break
             
     #移动文件部分
-            #TODO 关联另外一个文件
     if if_move_file:
         if not os.path.exists(result_file_path+os.path.sep+file_path):
             os.mkdir(result_file_path+os.path.sep+file_path)
